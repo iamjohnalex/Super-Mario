@@ -27,6 +27,7 @@ body {
 			game.load.audio('jump','audio/jump.wav');
 			game.load.audio('coinsc','audio/coin.wav');
 			game.load.audio('death','audio/death.wav');
+			game.load.image('pic','assets/coin1.png');
 			
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -44,6 +45,11 @@ body {
 		}
 		var music;
 		var scoreText;
+		var ccounter;
+		var cvalue=0;
+		var cimage;
+		var lives=3;
+		var lcounter;
 		
 		
 		function create() {
@@ -90,7 +96,16 @@ body {
 			player.goesRight = true;
 
 			game.camera.follow(player);
-
+			
+			scoreText=game.add.text(16,8,'LUIGI\n'+score,{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
+			cimage=game.add.sprite(95,7,'pic');
+			lcounter=game.add.text(189,13,'Lives X'+lives,{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+			ccounter=game.add.text(110,13,'X'+cvalue,{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+			cimage.fixedToCamera=true;
+			scoreText.fixedToCamera=true;
+			ccounter.fixedToCamera=true;
+			lcounter.fixedToCamera=true;
+			
 			cursors = game.input.keyboard.createCursorKeys();
 			
 			music=game.add.audio('maintheme');
@@ -101,6 +116,7 @@ body {
 		var stomps;
 		var csound;
 		var deaths;
+		var score=0;
 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
@@ -143,7 +159,11 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
+			cvalue += 1;
+			ccounter.text = 'X' + cvalue;
+			score +=100;
 			csound = game.add.audio('coinsc');
+			scoreText.text='LUIGI\n'+score;
 			csound.play();
 			coin.kill();
 		}
@@ -155,7 +175,9 @@ body {
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
 				stomps = game.add.audio('stomp');
-		        		stomps.play();
+		        	stomps.play();
+		        	score += 400;
+    				scoreText.text = 'lUIGI\n' + score;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
@@ -166,11 +188,19 @@ body {
 				deaths=game.add.audio('death');
 				music.stop();
 				deaths.play();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
-				});
+				if(lives>1){
+					setTimeout(function(){
+					score=0;
+					cvalue=0;
+					lives-=1;
+    		    		game.state.start(game.state.current);
+    		   		 }, 4000);
+    					} else {
+				setTimeout(function(){
+				location.reload();
+				}, 4000);}
 			}
 		}
 	</script>
-</body>
+  </body>
 </html>
