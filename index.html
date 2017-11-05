@@ -98,9 +98,9 @@ body {
 			game.camera.follow(player);
 			
 			scoreText=game.add.text(16,8,'LUIGI\n'+score,{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
-			cimage=game.add.sprite(95,7,'pic');
-			lcounter=game.add.text(189,13,'Lives X'+lives,{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-			ccounter=game.add.text(110,13,'X'+cvalue,{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+			cimage=game.add.sprite(55,7,'pic'); //95
+			lcounter=game.add.text(120,13,'Lives X'+lives,{font:'25px FONT' ,fontSize: '10px', fill: 'white'}); //189
+			ccounter=game.add.text(70,13,'X'+cvalue,{font:'25px FONT' ,fontSize: '10px', fill: 'white'}); //110
 			cimage.fixedToCamera=true;
 			scoreText.fixedToCamera=true;
 			ccounter.fixedToCamera=true;
@@ -167,6 +167,19 @@ body {
 			scoreText.text='LUIGI\n'+score;
 			csound.play();
 			coin.kill();
+		}
+		
+		var count=180;
+
+		var counter=setInterval(timer, 1000); 
+
+		function timer(){
+		count=count-1;
+			if (count <= 0){
+				clearInterval(counter);
+				return;
+			}
+		timeText=game.add.text(189,8,'Time'+count,{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
 		}
 
 		function goombaOverlap(player, goomba) {
