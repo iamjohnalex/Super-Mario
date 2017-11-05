@@ -26,7 +26,7 @@ body {
 			game.load.audio('stomp','audio/stomp.wav');
 			game.load.audio('jump','audio/jump.wav');
 			game.load.audio('coinsc','audio/coin.wav');
-			game.load.audio('death','audio/death.wav');
+			game.load.audio('death','audio/death.mp3');
 			game.load.image('pic','assets/count_coin_gold.png');
 			game.load.audio('finish','audio/tasteofwin.mp3');
 			
@@ -178,7 +178,7 @@ body {
 				music.stop();
 				Wfinish.play();
 				setTimeout(function(){
-					location.reload();
+				location.reload();
 				}, 6000);
 			
 			}
