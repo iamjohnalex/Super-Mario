@@ -27,7 +27,7 @@ body {
 			game.load.audio('jump','audio/jump.wav');
 			game.load.audio('coinsc','audio/coin.wav');
 			game.load.audio('death','audio/death.wav');
-			game.load.image('pic','assets/coin1.png');
+			game.load.image('pic','assets/count_coin_gold.png');
 			
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -38,7 +38,7 @@ body {
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/luigi.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('coin', 'assets/coin_gold.png', 16, 16);
 
 			this.load.tilemap('level', 'assets/2016041.json', null,
 					Phaser.Tilemap.TILED_JSON);
@@ -74,7 +74,7 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
+					[ 0, 0, 1, 2,3,4,5,6,7 ], 10, true);
 			coins.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
