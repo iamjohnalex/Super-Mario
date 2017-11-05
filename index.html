@@ -166,14 +166,16 @@ body {
 			ccounter.text = 'X' + cvalue;
 			score +=100;
 			csound = game.add.audio('coinsc');
+			Wfinish=game.add.audio('finish');
 			scoreText.text='LUIGI\n'+score;
 			csound.play();
 			coin.kill();
 			if (cvalue==101){
-				
+				WinText=game.add.text(1840,110,'𝐜𝐨𝐧𝐠𝐫𝐚𝐭𝐮𝐥𝐚𝐭𝐢𝐨𝐧𝐬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} );
 				player.frame = 11;
 				player.body.enable = false;
 				player.body.velocity.y = -80;
+				player.animations.stop();
 				music.stop();
 				Wfinish.play();
 				setTimeout(function(){
