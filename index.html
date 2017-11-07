@@ -51,6 +51,7 @@ body {
 		var cimage;
 		var lives=3;
 		var lcounter;
+		var TimeText;
 		
 		
 		function create() {
@@ -106,15 +107,56 @@ body {
 			scoreText.fixedToCamera=true;
 			ccounter.fixedToCamera=true;
 			lcounter.fixedToCamera=true;
-			InfoText=game.add.text(16,120,'𝐒𝐔𝐏𝐄𝐑 𝐌𝐀𝐑𝐈𝐎 𝐆𝐀𝐌𝐄\nUp,Right,left Arrow Keys To Play\nCollect All Coins To Win',{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
+			InfoText=game.add.text(16,120,'𝐒𝐔𝐏𝐄𝐑 𝐌𝐀𝐑𝐈𝐎 𝐆𝐀𝐌𝐄\nUp, Right, left Arrow Keys To Play\nCollect All Coins To Win',{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
 			
 			cursors = game.input.keyboard.createCursorKeys();
+			
+			TimeText=game.add.text(189,33,'Time '+tcount,{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+			TimeText.fixedToCamera=true;
 			
 			music=game.add.audio('maintheme');
 			music.loop=true;
 			music.play();
 			
 		}
+		
+		var counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
+		var tcount=100;
+		
+		function countdown(){
+		tcount=tcount-1;
+			if (tcount <1 && lives>0){
+				clearInterval(counter);
+				TimeText.kill();
+				TimeoutText=game.add.text(189,33,'Time Is Up',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+				TimeoutText.fixedToCamera=true;
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				deaths=game.add.audio('death');
+				music.stop();
+				deaths.play();
+				setTimeout(function(){
+					tcount=100;
+					score=0;
+					cvalue=0;
+					lives-=1;
+					alert("TRY AGAIN\nTIME IS UP");
+					game.state.start(game.state.current);
+    		   	}, 4000);
+				if(lives<1){
+					GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+					setTimeout(function(){
+						alert("TRY AGAIN\nYOU LOST ALL YOUR LIVES");
+						location.reload();
+					}, 4000);
+				}
+			
+			}
+		TimeText.text='Time '+tcount;
+		}
+		
+		
 		var jumps;
 		var stomps;
 		var csound;
@@ -171,8 +213,10 @@ body {
 			csound.play();
 			coin.kill();
 			if (cvalue==101){
-				WinText=game.add.text(1840,110,'𝐜𝐨𝐧𝐠𝐫𝐚𝐭𝐬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} );
-				game.camera.follow(WinText);
+				TimeText.kill();
+				iamwinnerText=game.add.text(189,33,'YOU WON',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+				WinText=game.add.text(1850,110,'𝐜𝐨𝐧𝐠𝐫𝐚𝐭𝐬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} ); 
+				game.camera.follow(WinText); // allagh na mpei
 				player.frame = 11;
 				player.body.enable = false;
 				player.body.velocity.y = -80;
@@ -200,14 +244,17 @@ body {
 					goomba.kill();
 				});
 			} else {
+				TimeText.kill();
+				GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
 				deaths=game.add.audio('death');
 				music.stop();
 				deaths.play();
-				if(lives>1){
+				if(lives>1 && tcount>-1){
 					setTimeout(function(){
+					tcount=100;
 					score=0;
 					cvalue=0;
 					lives-=1;
