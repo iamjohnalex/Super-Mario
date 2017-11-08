@@ -145,8 +145,8 @@ body {
 					game.state.start(game.state.current);
 					
     		   	}, 4000);
-			}
-				if(lives=1){
+			
+				if(lives<=1){
 					GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
 					GameOverText.fixedToCamera=true;
 					setTimeout(function(){
@@ -154,7 +154,7 @@ body {
 						location.reload();
 					}, 4000);
 				}
-			
+			}
 			
 		TimeText.text='Time '+tcount;
 		}
