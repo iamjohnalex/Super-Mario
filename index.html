@@ -125,7 +125,7 @@ body {
 		
 		function countdown(){
 		tcount=tcount-1;
-			if (tcount <1 && lives>0){
+			if (tcount <1 && lives>=1){
 				clearInterval(counter);
 				TimeText.kill();
 				TimeoutText=game.add.text(189,33,'Time Is Up',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
@@ -142,10 +142,14 @@ body {
 					cvalue=0;
 					lives-=1;
 					alert("TRY AGAIN\nTIME IS UP");
+					if (lives>1){
 					game.state.start(game.state.current);
+					}
     		   	}, 4000);
-				if(lives<1){
+				if(lives=1){
+					TimeouteText.kill();
 					GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+					GameOverText.fixedToCamera=true;
 					setTimeout(function(){
 						alert("TRY AGAIN\nYOU LOST ALL YOUR LIVES");
 						location.reload();
