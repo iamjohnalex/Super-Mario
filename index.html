@@ -125,7 +125,7 @@ body {
 		
 		function countdown(){
 		tcount=tcount-1;
-			if (tcount <1 && lives>1){
+			if (tcount <1 && lives>=1){
 				clearInterval(counter);
 				TimeText.kill();
 				TimeoutText=game.add.text(189,33,'Time Is Up',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
