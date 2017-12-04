@@ -29,6 +29,7 @@ body {
 			game.load.audio('death','audio/death.mp3');
 			game.load.image('pic','assets/count_coin_gold.png');
 			game.load.audio('finish','audio/tasteofwin.mp3');
+			game.load.audio('tpsound','audio/teleport.mp3');   
 			
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -66,9 +67,12 @@ body {
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
 			map.setCollisionBetween(3, 12, true, 'solid');
+			map.setCollisionBetween(3, 12, true, 'pipes'); 
 
 			map.createLayer('background');
-
+			
+			pipes = map.createLayer('pipes'); 
+			pipes.resizeWorld();	
 			layer = map.createLayer('solid');
 			layer.resizeWorld();
 
@@ -121,7 +125,7 @@ body {
 		}
 		
 		var counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
-		var tcount=100;
+		var tcount=180;
 		
 		function countdown(){
 		tcount=tcount-1;
@@ -137,7 +141,7 @@ body {
 				music.stop();
 				deaths.play();
 				setTimeout(function(){
-					tcount=100;
+					tcount=180;
 					score=0;
 					cvalue=0;
 					lives-=1;
@@ -172,7 +176,8 @@ body {
 			game.physics.arcade.collide(goombas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
-
+			game.physics.arcade.collide(player,pipes,pipesOverlap); 	
+			
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
 				if (cursors.left.isDown) {
@@ -206,7 +211,23 @@ body {
 				}
 			}
 		}
-
+		
+		function pipesOverlap(player,pipes){
+			if (cursors.down.isDown && (player.body.onFloor())) {
+				tpsounds = game.add.audio('tpsound');
+				tpsounds.play();
+				player.body.enable=false;
+				player.frame = 13
+				game.time.events.add(Phaser.Timer.SECOND*1.5 , function() {
+					player.body.enable=true;
+					player.reset(560,1);
+				});
+			}
+		}
+		
+		
+		
+		
 		function coinOverlap(player, coin) {
 			cvalue += 1;
 			ccounter.text = 'X' + cvalue;
@@ -216,7 +237,7 @@ body {
 			scoreText.text='LUIGI\n'+score;
 			csound.play();
 			coin.kill();
-			if (cvalue==101){
+			if (cvalue==110){
 				TimeText.kill();
 				iamwinnerText=game.add.text(189,33,'YOU WON',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
 				WinText=game.add.text(1850,110,'𝐜𝐨𝐧𝐠𝐫𝐚𝐭𝐬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} ); 
@@ -258,7 +279,7 @@ body {
 				deaths.play();
 				if(lives>1 && tcount>-1){
 					setTimeout(function(){
-					tcount=100;
+					tcount=180;
 					score=0;
 					cvalue=0;
 					lives-=1;
