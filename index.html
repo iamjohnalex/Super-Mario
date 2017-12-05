@@ -125,7 +125,7 @@ body {
 			scoreText.fixedToCamera=true;
 			ccounter.fixedToCamera=true;
 			lcounter.fixedToCamera=true;
-			InfoText=game.add.text(16,120,'𝐒𝐔𝐏𝐄𝐑 𝐌𝐀𝐑𝐈𝐎 𝐆𝐀𝐌𝐄\nUp, Right, left Arrow Keys To Play\nCollect All Coins To Win',{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
+			InfoText=game.add.text(16,120,'𝐒𝐔𝐏𝐄𝐑 𝐌𝐀𝐑𝐈𝐎 𝐆𝐀𝐌𝐄\nUp, Right, left Arrow Keys To Play\nSave The Queen',{font:'25px FONT' ,fontSize: '10px', fill: 'white'} );
 			
 			cursors = game.input.keyboard.createCursorKeys();
 			
@@ -260,9 +260,6 @@ body {
 			}
 		}
 		
-		
-		
-		
 		function coinOverlap(player, coin) {
 			cvalue += 1;
 			ccounter.text = 'X' + cvalue;
@@ -272,22 +269,6 @@ body {
 			scoreText.text='LUIGI\n'+score;
 			csound.play();
 			coin.kill();
-			if (cvalue==110){
-				TimeText.kill();
-				iamwinnerText=game.add.text(189,33,'YOU WON',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-				WinText=game.add.text(1850,110,'𝐜𝐨𝐧𝐠𝐫𝐚𝐭𝐬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} ); 
-				game.camera.follow(WinText); // allagh na mpei
-				player.frame = 11;
-				player.body.enable = false;
-				player.body.velocity.y = -80;
-				player.animations.stop();
-				music.stop();
-				Wfinish.play();
-				setTimeout(function(){
-				location.reload();
-				}, 6000);
-			
-			}
 		}
 		
 		function mageOverlap(player, mage) {		
@@ -327,8 +308,6 @@ body {
 				}, 4000);}
 			}
 		}
-		
-		
 		
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
