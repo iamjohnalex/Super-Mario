@@ -69,13 +69,16 @@ body {
 			map.addTilesetImage('tiles', 'tiles');
 			map.setCollisionBetween(3, 12, true, 'solid');
 			map.setCollisionBetween(3, 12, true, 'pipes'); 
-
+			map.setCollisionBetween(3, 12, true, 'flag');
+			
 			map.createLayer('background');
 			
 			pipes = map.createLayer('pipes'); 
 			pipes.resizeWorld();	
 			layer = map.createLayer('solid');
 			layer.resizeWorld();
+			flag = map.createLayer('flag');  
+			flag.resizeWorld();		
 
 			coins = game.add.group();
 			coins.enableBody = true;
@@ -190,6 +193,7 @@ body {
 			game.physics.arcade.collide(player,pipes,pipesOverlap); 	
 			game.physics.arcade.collide(mages, layer);  
 			game.physics.arcade.overlap(player, mages, mageOverlap);
+			game.physics.arcade.collide(player, flag, flagOverlap);
 			
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
@@ -225,15 +229,33 @@ body {
 			}
 		}
 		
+		function flagOverlap(player,flag){
+			if ((player.body.onFloor())) {
+				TimeText.kill();
+				iamwinnerText=game.add.text(189,33,'YOU WON',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+				WinText=game.add.text(1850,110,'𝐜𝐨𝐧𝐠𝐫𝐚𝐭𝐬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} ); 
+				game.camera.follow(WinText); 
+				player.frame = 11;
+				player.body.enable = false;
+				player.body.velocity.y = -80;
+				player.animations.stop();
+				music.stop();
+				Wfinish.play();
+				setTimeout(function(){
+				location.reload();
+				}, 6000);
+			}
+		}
+		
 		function pipesOverlap(player,pipes){
 			if (cursors.down.isDown && (player.body.onFloor())) {
 				tpsounds = game.add.audio('tpsound');
 				tpsounds.play();
 				player.body.enable=false;
 				player.frame = 13
-				game.time.events.add(Phaser.Timer.SECOND*1.5 , function() {
+				game.time.events.add(Phaser.Timer.SECOND*1.3 , function() {
 					player.body.enable=true;
-					player.reset(560,1);
+					player.reset(557,1);
 				});
 			}
 		}
@@ -292,7 +314,7 @@ body {
 				deaths.play();
 				if(lives>1 && tcount>-1){
 					setTimeout(function(){
-					tcount=100;
+					tcount=140;
 					score=0;
 					cvalue=0;
 					lives-=1;
