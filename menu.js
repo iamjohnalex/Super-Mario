@@ -3,10 +3,16 @@ var menu= {
     preload: function(){
 		game.load.image('level1','assets/stage1.png');
 		game.load.image('backgroundpic','assets/menupic.jpg');
+	  	game.load.audio('menus','audio/menusound.wav');
 	},
     
     
-	create:function(){	
+	create:function(){
+		
+		menus = game.add.audio('menus');
+		menus.loop=true;
+		menus.play();
+		
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
