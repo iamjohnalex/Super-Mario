@@ -12,6 +12,7 @@ body {
 </style>
 <script src="menu.js"></script>
 <script src="part1.js"></script>
+<script src="gameover.js"></script>
 <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
 <body>
@@ -31,17 +32,16 @@ body {
 		var cimage;
 		var lives=3;
 		var lcounter;
-		var TimeText;
 		var jumps;
 		var stomps;
 		var csound;
 		var deaths;
 		var score=0;
-		var counter=setInterval(countdown, 1000); //1000 will  run it every 1 second
-		var tcount=180;
+		
+		
 		
         
-        
+        game.state.add('gameover', gameover);
         game.state.add('part1', part1);
 		game.state.add('menu', menu);
 		game.state.start('menu');
@@ -49,10 +49,10 @@ body {
 		
 		function flagOverlap(player,flag){
 			if ((player.body.onFloor())) {
-				TimeText.kill();
+			
 				iamwinnerText=game.add.text(189,33,'YOU WON',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-				WinText=game.add.text(1850,110,'ππ¨π§π π«ππ­π¬',{font:'25px FONT' ,fontSize: '20px', fill: 'white'} ); 
-				game.camera.follow(WinText); 
+
+				
 				player.frame = 11;
 				player.body.enable = false;
 				player.body.velocity.y = -80;
@@ -60,7 +60,7 @@ body {
 				music.stop();
 				Wfinish.play();
 				setTimeout(function(){
-				location.reload();
+				game.state.start('menu');
 				}, 6000);
 			}
 		}
@@ -111,9 +111,9 @@ body {
 				deaths=game.add.audio('death');
 				music.stop();
 				deaths.play();
-				if(lives>1 && tcount>-1){
+				if(lives>1){
 					setTimeout(function(){
-					tcount=140;
+					
 					score=0;
 					cvalue=0;
 					lives-=1;
@@ -121,47 +121,14 @@ body {
     		   		 }, 4000);
     					} else {
 				setTimeout(function(){
-				alert("π“π‘π π€π†π€ππ\nπππ” π‹ππ’π“ π€π‹π‹ πππ”π‘ π‹ππ•π„π’!");
-				location.reload();
+				
+				game.state.start('gameover');
 				}, 4000);}
 			}
 		}
-		 function countdown(){
-		tcount=tcount-1;
-			if (tcount <1 && lives>=1){
-				clearInterval(counter);
-				TimeText.kill();
-				TimeoutText=game.add.text(189,33,'Time Is Up',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-				TimeoutText.fixedToCamera=true;
-				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
-				deaths=game.add.audio('death');
-				music.stop();
-				deaths.play();
-				setTimeout(function(){
-					tcount=180;
-					score=0;
-					cvalue=0;
-					lives-=1;
-					alert("TRY AGAIN\nTIME IS UP");
-					game.state.start(game.state.current);
-					
-    		   	}, 4000);
-			
-				if(lives<=1){
-					TimeoutText.kill();
-					GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-					GameOverText.fixedToCamera=true;
-					setTimeout(function(){
-						alert("TRY AGAIN\nYOU LOST ALL YOUR LIVES");
-						location.reload();
-					}, 4000);
-				}
-			}
-			
-		TimeText.text='Time '+tcount;
-		}
+		 
+		 
+    
 		
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
@@ -177,7 +144,7 @@ body {
 					goomba.kill();
 				});
 			} else {
-				TimeText.kill();
+				
 				GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
 				player.frame = 6;
 				player.body.enable = false;
@@ -185,9 +152,9 @@ body {
 				deaths=game.add.audio('death');
 				music.stop();
 				deaths.play();
-				if(lives>1 && tcount>-1){
+				if(lives>1 ){
 					setTimeout(function(){
-					tcount=180;
+				
 					score=0;
 					cvalue=0;
 					lives-=1;
@@ -195,8 +162,8 @@ body {
     		   		 }, 4000);
     					} else {
 				setTimeout(function(){
-				alert("π“π‘π π€π†π€ππ\nπππ” π‹ππ’π“ π€π‹π‹ πππ”π‘ π‹ππ•π„π’!");
-				location.reload();
+				
+				game.state.start('gameover');
 				}, 4000);}
 			}
 		}
