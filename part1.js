@@ -1,12 +1,8 @@
-var part1= {
-    
-    
-
-    
-    
-    preload: function() {
+var part1 = {
+	
+	preload: function() {
 			//Οι απαιτούμενοι ήχοι για το παιχνίδι.
-			game.load.audio('maintheme','audio/themesong.mp3');
+			game.load.audio('maintheme','audio/themesong.wav');
 			game.load.audio('stomp','audio/stomp.wav');
 			game.load.audio('jump','audio/jump.wav');
 			game.load.audio('coinsc','audio/coin.wav');
@@ -23,21 +19,16 @@ var part1= {
 			this.load.spritesheet('mage', 'assets/mage.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/luigi.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin_gold.png', 16, 16);
+			this.load.spritesheet('spike', 'assets/spike.png', 16, 16);
 
-			this.load.tilemap('level', 'assets/2016041.json', null,
+			this.load.tilemap('level', 'assets/2016041_1.json', null,
 					Phaser.Tilemap.TILED_JSON);
+					
 		},
-
-
-
-
-
-
-
-
-    
-    create: function() {
-	    		menus.stop(); 
+		
+		
+	create: function() {
+			menus.stop();
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 
 			game.stage.backgroundColor = '#000000';
@@ -46,7 +37,9 @@ var part1= {
 			map.addTilesetImage('tiles', 'tiles');
 			map.setCollisionBetween(3, 12, true, 'solid');
 			map.setCollisionBetween(3, 12, true, 'pipes'); 
-			map.setCollisionBetween(30, 65, true, 'flag');
+			map.setCollisionBetween(21,29, true, 'continues');
+			map.setCollisionBetween(63,null, true, 'spikes');
+			
 			
 			map.createLayer('background');
 			
@@ -54,9 +47,12 @@ var part1= {
 			pipes.resizeWorld();	
 			layer = map.createLayer('solid');
 			layer.resizeWorld();
-			flag = map.createLayer('flag');  
-			flag.resizeWorld();		
+			continues = map.createLayer('continues');  
+			continues.resizeWorld();		
 
+			spikes = map.createLayer('spikes');  
+			spikes.resizeWorld();	
+			
 			coins = game.add.group();
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
@@ -73,6 +69,13 @@ var part1= {
 			mages.setAll('body.velocity.x', -25);
 			mages.setAll('body.gravity.y', 500);
 			
+			spikes = game.add.group();
+			spikes.enableBody = true;
+			map.createFromTiles(63,null,'spike','spikes',spikes);
+			spikes.callAll('animations.add', 'animations', 'stay', [0,1,2,3], 7, true);
+			spikes.callAll('animations.play', 'animations', 'stay');
+			spikes.setAll('body.immovable', true);
+
 			
 			goombas = game.add.group();
 			goombas.enableBody = true;
@@ -98,7 +101,7 @@ var part1= {
 			cimage=game.add.sprite(95,7,'pic'); //95
 			lcounter=game.add.text(189,13,'Lives X'+lives,{font:'25px FONT' ,fontSize: '10px', fill: 'white'}); //189
 			ccounter=game.add.text(110,13,'X'+cvalue,{font:'25px FONT' ,fontSize: '10px', fill: 'white'}); //110
-			cimage.fixedToCamera=true;
+			cimage.fixedToCamera=true;  
 			scoreText.fixedToCamera=true;
 			ccounter.fixedToCamera=true;
 			lcounter.fixedToCamera=true;
@@ -106,25 +109,15 @@ var part1= {
 			
 			cursors = game.input.keyboard.createCursorKeys();
 			
-			
+		
 			
 			music=game.add.audio('maintheme');
 			music.loop=true;
 			music.play();
 			
-		},
-
-   
-
-
-
-
-
-
-
-
+	},
 		
-    update: function() {
+	update: function() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
@@ -132,7 +125,9 @@ var part1= {
 			game.physics.arcade.collide(player,pipes,pipesOverlap); 	
 			game.physics.arcade.collide(mages, layer);  
 			game.physics.arcade.overlap(player, mages, mageOverlap);
-			game.physics.arcade.collide(player, flag, flagOverlap);
+			game.physics.arcade.collide(player, continues, continuesOverlap);
+			game.physics.arcade.collide(spikes, layer);  
+			game.physics.arcade.overlap(player, spikes, spikesOverlap);
 			
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
@@ -166,6 +161,9 @@ var part1= {
 						player.frame = 12;
 				}
 			}
-		}
-    
+	}
+	
+	
+	
+	
 }
