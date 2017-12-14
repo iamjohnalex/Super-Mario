@@ -12,6 +12,7 @@ body {
 </style>
 <script src="menu.js"></script>
 <script src="part1.js"></script>
+<script src="part2.js"></script>
 <script src="gameover.js"></script>
 <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
@@ -42,9 +43,56 @@ body {
 		
         
         game.state.add('gameover', gameover);
-        game.state.add('part1', part1);
+		game.state.add('part1', part1);
+        game.state.add('part2', part2);
 		game.state.add('menu', menu);
 		game.state.start('menu');
+		
+		
+		function  continuesOverlap(player,continues){
+			if (cursors.right.isDown && (player.body.onFloor())) {
+				tpsounds = game.add.audio('tpsound');
+				tpsounds.play();
+				player.body.enable=false;
+				player.frame = 12;
+				game.time.events.add(Phaser.Timer.SECOND*1.7 , function() {
+					player.body.enable=true;
+					game.state.start('part2');
+					});
+			}
+		}
+		
+			function spikesOverlap(player,spikes){
+			  if  (player.body.onFloor()) {
+				GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+				GameOverText.fixedToCamera=true; 
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				deaths=game.add.audio('death');
+				music.stop();
+				deaths.play();
+				if(lives>1 ){
+					setTimeout(function(){
+				
+					score=0;
+					cvalue=0;
+					lives-=1;
+    		    		game.state.start(game.state.current);
+    		   		 }, 4000);
+    					} else {
+				setTimeout(function(){
+				
+				game.state.start('gameover');
+				}, 4000);}
+				
+				
+				
+			   }
+		
+			}
+		
+		
 		
 		
 		function flagOverlap(player,flag){
@@ -66,14 +114,14 @@ body {
 		}
 		
 		function pipesOverlap(player,pipes){
-			if (cursors.down.isDown && (player.body.onFloor())) {
+			if  (cursors.down.isDown && (player.body.onFloor())) {
 				tpsounds = game.add.audio('tpsound');
 				tpsounds.play();
 				player.body.enable=false;
-				player.frame = 13
-				game.time.events.add(Phaser.Timer.SECOND*1.3 , function() {
+				player.frame = 12;
+				game.time.events.add(Phaser.Timer.SECOND*1.7 , function() {
 					player.body.enable=true;
-					player.reset(557,1);
+					player.reset(962,1);
 				});
 			}
 		}
@@ -89,7 +137,7 @@ body {
 			coin.kill();
 		}
 		
-		function mageOverlap(player, mage) {		
+		function mageOverlap(player, mage) {
 			if (player.body.touching.down) {
 				mage.animations.stop();
 				mage.frame = 13;
@@ -101,10 +149,12 @@ body {
     				scoreText.text = 'lUIGI\n' + score;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					mage.kill();
+					
 				});
 			}
 			 else {
 				GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+				GameOverText.fixedToCamera=true; 
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
@@ -128,7 +178,6 @@ body {
 		}
 		 
 		 
-    
 		
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
@@ -146,6 +195,7 @@ body {
 			} else {
 				
 				GameOverText=game.add.text(189,33,'GAME OVER',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
+				GameOverText.fixedToCamera=true; 
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
