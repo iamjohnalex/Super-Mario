@@ -31,7 +31,7 @@ var part2= {
 
     
     create: function() {
-			
+			music.stop();
 			menus.stop(); 
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 
