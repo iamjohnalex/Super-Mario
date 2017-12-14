@@ -37,6 +37,7 @@ var part1= {
 
     
     create: function() {
+	    		menus.stop(); 
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 
 			game.stage.backgroundColor = '#000000';
@@ -105,8 +106,7 @@ var part1= {
 			
 			cursors = game.input.keyboard.createCursorKeys();
 			
-			TimeText=game.add.text(189,33,'Time '+tcount,{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-			TimeText.fixedToCamera=true;
+			
 			
 			music=game.add.audio('maintheme');
 			music.loop=true;
