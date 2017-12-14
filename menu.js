@@ -1,13 +1,15 @@
-var menu= {
-    
-    preload: function(){
+var menu = {
+   
+	
+    preload: function () {
 		game.load.image('level1','assets/stage1.png');
+		game.load.image('level2','assets/stage2.png');   
 		game.load.image('backgroundpic','assets/menupic.jpg');
-	  	game.load.audio('menus','audio/menusound.wav');
+		game.load.audio('menus','audio/menusound.wav');
 	},
     
     
-	create:function(){
+	create: function() {
 		
 		menus = game.add.audio('menus');
 		menus.loop=true;
@@ -20,14 +22,23 @@ var menu= {
 		
 		var background=game.add.sprite(0,0,'backgroundpic');
 		
-
+		
+	
+		
 		var button1 = game.add.button(130 , 150, "level1", function(){
+		
 			game.state.start('part1');
 		});
 		button1.anchor.set(0.5, 0.5);
-
-}
-    
+		
+		
+		var button2 = game.add.button(130 , 180, "level2", function(){
+		
+			game.state.start('part2');
+		});
+		button2.anchor.set(0.5, 0.5);
+	
+	}	
     
     
     
