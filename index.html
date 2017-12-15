@@ -42,9 +42,9 @@ body {
 		
 		
         
-        game.state.add('gameover', gameover);
+       		game.state.add('gameover', gameover);
 		game.state.add('part1', part1);
-        game.state.add('part2', part2);
+     		game.state.add('part2', part2);
 		game.state.add('menu', menu);
 		game.state.start('menu');
 		
@@ -99,7 +99,8 @@ body {
 			if ((player.body.onFloor())) {
 			
 				iamwinnerText=game.add.text(189,33,'YOU WON',{font:'25px FONT' ,fontSize: '10px', fill: 'white'});
-
+				score=0;
+				cvalue=0;
 				lives=3;
 				player.frame = 11;
 				player.body.enable = false;
