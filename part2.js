@@ -5,7 +5,7 @@ var part2= {
     
     preload: function() {
 			//Οι απαιτούμενοι ήχοι για το παιχνίδι.
-			game.load.audio('maintheme','audio/themesong.wav');
+			game.load.audio('maintheme','audio/themesong.mp3');
 			game.load.audio('stomp','audio/stomp.wav');
 			game.load.audio('jump','audio/jump.wav');
 			game.load.audio('coinsc','audio/coin.wav');
